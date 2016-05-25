@@ -166,7 +166,7 @@ class Connection(object):
         return bug
 
 
-class BugzillaException(xmlrpclib.Fault):
+class BugzillaException(Exception):
     pass
 
 
