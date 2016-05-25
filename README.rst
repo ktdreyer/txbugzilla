@@ -4,6 +4,9 @@ Async interface to Bugzilla, using Twisted
 Access Bugzilla's XML-RPC API asyncronously (non-blocking) using the Twisted
 framework.
 
+.. image:: https://badge.fury.io/py/txbugzilla.svg
+          :target: https://badge.fury.io/py/txbugzilla
+
 Simple Example: Fetching a bug
 ------------------------------
 
