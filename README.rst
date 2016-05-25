@@ -116,3 +116,30 @@ This will definitely earn you friends.
                print('bz #1234 is already assigned to someone@redhat.com')
         except BugzillaException as e:
             print(e)
+
+Example: Raw XML-RPC calls
+--------------------------
+
+Want to make some `API call
+<https://bugzilla.redhat.com/docs/en/html/api/index.html>`_ not mentioned here?
+Use the ``call()`` method to make raw XML-RPC calls. It will take care of token
+authentication for you, too.
+
+For example, to see a list of all the groups of which you are a member:
+
+.. code-block:: python
+
+    from txbugzilla import connect
+    from twisted.internet import defer
+    from pprint import pprint
+
+    @defer.inlineCallbacks
+    def example():
+        bz = yield connect(username='user@example.com', password='foo')
+
+        try:
+            result = yield bz.call('User.get', {'names': [bz.username],
+                                                'include_fields': ['groups']})
+            pprint(result['users'][0]['groups'])
+        except BugzillaException as e:
+            print(e)
