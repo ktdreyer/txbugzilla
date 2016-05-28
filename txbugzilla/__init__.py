@@ -1,7 +1,11 @@
 from twisted.web.xmlrpc import Proxy
 from twisted.internet import defer
 from attrdict import AttrDict
-import xmlrpclib
+try:
+    import xmlrpc
+except ImportError:
+    # Python 2
+    import xmlrpclib as xmlrpc
 
 
 __version__ = '0.0.1'
@@ -142,13 +146,13 @@ class Connection(object):
         raises: ``BugzillaNotFoundException``
         raises: ``BugzillaNotAuthorizedException``
         raises: ``BugzillaException`` if we got a response from the XML-RPC
-                server but it is not one of the ``xmlrpclib.Fault``s above that
+                server but it is not one of the ``xmlrpc.Fault``s above that
                 we know about.
         raises: ``Exception`` if it is not one of the above.
         """
         if isinstance(error.value, IOError):
             raise error.value
-        if isinstance(error.value, xmlrpclib.Fault):
+        if isinstance(error.value, xmlrpc.Fault):
             if error.value.faultCode == 101:
                 raise BugzillaNotFoundException(error.value.faultString)
             if error.value.faultCode == 102:
