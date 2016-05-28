@@ -18,7 +18,7 @@ def connect(url=REDHAT, username=None, password=None):
         return defer.succeed(Connection(url))
     if password is None:
         raise ValueError('specify a password for %s' % username)
-    proxy = Proxy(url)
+    proxy = Proxy(url.encode())
     d = proxy.callRemote('User.login', {'login': username,
                                         'password': password})
     d.addCallback(connect_callback, url, username)
@@ -32,7 +32,7 @@ def connect_callback(value, url, username):
 class Connection(object):
 
     def __init__(self, url, username=None, token=None):
-        self.proxy = Proxy(url)
+        self.proxy = Proxy(url.encode())
         self.username = username
         self.token = token
 
