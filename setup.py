@@ -134,6 +134,7 @@ setup(
         'twisted',
     ],
     tests_require=[
+        'pytest-flake8',
         'pytest-twisted',
     ],
     cmdclass={'test': PyTest, 'bump': BumpCommand, 'release': ReleaseCommand},
