@@ -127,6 +127,7 @@ setup(
                  'Topic :: Software Development :: Bug Tracking',
                  'Operating System :: OS Independent',
                  'Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: 3.4',
     ],
     install_requires=[
         'attrdict',

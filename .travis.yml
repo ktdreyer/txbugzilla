@@ -2,6 +2,7 @@ language: python
 sudo: false
 python:
     - 2.7
+    - 3.4
 install:
     # We have to upgrade pytest explicitly here due to the following:
     # * Travis CI's virtualenv already comes with pytest preinstalled.
