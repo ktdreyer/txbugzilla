@@ -129,8 +129,10 @@ setup(
                  'Programming Language :: Python :: 2.7',
     ],
     install_requires=[
+        'attrdict',
         'pyOpenSSL',  # for Bugzillas that use HTTPS
         'service_identity',  # for Bugzillas that use HTTPS
+        'pyasn1',  # for Bugzillas that use HTTPS
         'twisted',
     ],
     tests_require=[
