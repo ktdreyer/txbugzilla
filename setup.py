@@ -119,6 +119,15 @@ setup(
     zip_safe=False,
     keywords='bugzilla, twisted',
     long_description=LONG_DESCRIPTION,
+    classifiers=[
+                 'Development Status :: 3 - Alpha',
+                 'Framework :: Twisted',
+                 'Intended Audience :: Developers',
+                 'License :: OSI Approved :: MIT License',
+                 'Topic :: Software Development :: Bug Tracking',
+                 'Operating System :: OS Independent',
+                 'Programming Language :: Python :: 2.7',
+    ],
     install_requires=[
         'pyOpenSSL',  # for Bugzillas that use HTTPS
         'service_identity',  # for Bugzillas that use HTTPS
