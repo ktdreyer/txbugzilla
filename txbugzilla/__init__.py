@@ -33,6 +33,7 @@ class Connection(object):
 
     def __init__(self, url=REDHAT, username=None, token=None):
         self.proxy = Proxy(url.encode())
+        self.url = url
         self.username = username
         self.token = token
 
@@ -166,6 +167,8 @@ class Connection(object):
         param data: dict of data from XML-RPC server, representing a bug.
         returns: AttrDict
         """
+        if 'id' in data:
+            data['weburl'] = self.url.replace('xmlrpc.cgi', str(data['id']))
         bug = AttrDict(data)
         return bug
 
