@@ -31,7 +31,7 @@ def connect_callback(value, url, username):
 
 class Connection(object):
 
-    def __init__(self, url, username=None, token=None):
+    def __init__(self, url=REDHAT, username=None, token=None):
         self.proxy = Proxy(url.encode())
         self.username = username
         self.token = token
