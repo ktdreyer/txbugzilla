@@ -85,7 +85,7 @@ class Connection(object):
         returns: deferred that when fired returns a list of ``AttrDict``s
                  representing these bugs.
         """
-        payload = {'ids': bugids, 'include_fields': ['summary']}
+        payload = {'ids': bugids, 'include_fields': ['id', 'summary']}
         d = self.call('Bug.get', payload)
         d.addCallback(self._parse_bugs_callback)
         return d
