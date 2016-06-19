@@ -12,7 +12,7 @@ except ImportError:
     import xmlrpclib as xmlrpc
 
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 REDHAT = 'https://bugzilla.redhat.com/xmlrpc.cgi'
 
