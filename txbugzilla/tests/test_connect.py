@@ -1,3 +1,4 @@
+import os
 import pytest
 from txbugzilla import connect, Connection
 from twisted.internet import defer
@@ -17,7 +18,8 @@ class _StubProxy(object):
 class TestConnect(object):
 
     @pytest.inlineCallbacks
-    def test_anonymous_connect(self):
+    def test_anonymous_connect(self, monkeypatch):
+        monkeypatch.setenv('HOME', os.getcwd())
         bz = yield connect()
         assert isinstance(bz, Connection)
 

@@ -1,10 +1,14 @@
+import os
 from twisted.web.xmlrpc import Proxy
 from twisted.internet import defer
 from attrdict import AttrDict
 try:
+    from configparser import SafeConfigParser
+    from urllib.parse import urlparse
     import xmlrpc
 except ImportError:
-    # Python 2
+    from ConfigParser import SafeConfigParser
+    from urlparse import urlparse
     import xmlrpclib as xmlrpc
 
 
@@ -14,19 +18,40 @@ REDHAT = 'https://bugzilla.redhat.com/xmlrpc.cgi'
 
 
 def connect(url=REDHAT, username=None, password=None):
-    if username is None:
+    token = token_from_file(url)
+    if username is None and password is None and token is None:
+        # anonymous connection.
         return defer.succeed(Connection(url))
-    if password is None:
+    if username is None and password is None and token is not None:
+        # use the token we got from the ~/.bugzillatoken file.
+        return defer.succeed(Connection(url, username, token))
+    if username is not None and password is None:
+        # Incorrect parameters
         raise ValueError('specify a password for %s' % username)
+    # The caller provided a username and password string. Use these to obtain a
+    # new token.
     proxy = Proxy(url.encode())
     d = proxy.callRemote('User.login', {'login': username,
                                         'password': password})
-    d.addCallback(connect_callback, url, username)
+    d.addCallback(login_callback, url, username)
     return d
 
 
-def connect_callback(value, url, username):
+def login_callback(value, url, username):
     return Connection(url, username, value['token'])
+
+
+def token_from_file(url):
+    """ Check ~/.bugzillatoken for a token for this Bugzilla URL. """
+    path = os.path.expanduser('~/.bugzillatoken')
+    cfg = SafeConfigParser()
+    cfg.read(path)
+    domain = urlparse(url)[1]
+    if domain not in cfg.sections():
+        return None
+    if not cfg.has_option(domain, 'token'):
+        return None
+    return cfg.get(domain, 'token')
 
 
 class Connection(object):
