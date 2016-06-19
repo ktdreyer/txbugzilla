@@ -81,7 +81,7 @@ re-use it when your program runs again.
         # Save bz.token to a file or database to reuse it later and avoid
         # having to re-authenticate.
         print(bz.token)
-        # prints "ABC-123"
+        # prints "123456-abcdef987"
 
 And then, to re-use this token later:
 
@@ -93,7 +93,7 @@ And then, to re-use this token later:
     @defer.inlineCallbacks
     def some_time_later():
         # Re-connect using that saved token
-        bz = Connection(username='user@example.com', token='ABC-123')
+        bz = Connection(username='user@example.com', token='123456-abcdef987')
 
         # Do something as this logged-in username, for example assign a bug
         # to someone:
