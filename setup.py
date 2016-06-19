@@ -125,7 +125,7 @@ setup(
     keywords='bugzilla, twisted',
     long_description=LONG_DESCRIPTION,
     classifiers=[
-                 'Development Status :: 3 - Alpha',
+                 'Development Status :: 5 - Production/Stable',
                  'Framework :: Twisted',
                  'Intended Audience :: Developers',
                  'License :: OSI Approved :: MIT License',
