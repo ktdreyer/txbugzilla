@@ -158,6 +158,8 @@ class Connection(object):
                 raise BugzillaNotFoundException(error.value.faultString)
             if error.value.faultCode == 102:
                 raise BugzillaNotAuthorizedException(error.value.faultString)
+            if error.value.faultCode == 32000:
+                raise BugzillaTokenExpiredException(error.value.faultString)
             raise BugzillaException(error.value)
         # We don't know what this is, so just raise it.
         raise error
@@ -182,4 +184,7 @@ class BugzillaNotFoundException(BugzillaException):
 
 
 class BugzillaNotAuthorizedException(BugzillaException):
+    pass
+
+class BugzillaTokenExpiredException(BugzillaException):
     pass
