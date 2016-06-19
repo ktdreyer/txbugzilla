@@ -211,5 +211,6 @@ class BugzillaNotFoundException(BugzillaException):
 class BugzillaNotAuthorizedException(BugzillaException):
     pass
 
+
 class BugzillaTokenExpiredException(BugzillaException):
     pass
