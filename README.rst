@@ -131,7 +131,7 @@ This will definitely earn you friends.
 
 .. code-block:: python
 
-    from txbugzilla import connect
+    from txbugzilla import connect, BugzillaException
     from twisted.internet import defer
 
     @defer.inlineCallbacks
@@ -159,7 +159,7 @@ For example, to see a list of all the groups of which you are a member:
 
 .. code-block:: python
 
-    from txbugzilla import connect
+    from txbugzilla import connect, BugzillaException
     from twisted.internet import defer
     from pprint import pprint
 
