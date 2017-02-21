@@ -172,7 +172,7 @@ class Connection(object):
                      contains a list of bugs.
         returns: ``list`` of ``AttrDict``
         """
-        return map(lambda x: self._parse_bug(x), value['bugs'])
+        return list(map(lambda x: self._parse_bug(x), value['bugs']))
 
     def _parse_bug_assigned_callback(self, value):
         """
