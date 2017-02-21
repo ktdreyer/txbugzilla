@@ -131,6 +131,29 @@ class Connection(object):
         d.addCallback(self._parse_bug_assigned_callback)
         return d
 
+    def find_by_external_tracker(self, url, id_):
+        """
+        Find a list of bugs by searching an external tracker URL and ID.
+
+        param url: ``str``, the external ticket URL, eg
+                   "http://tracker.ceph.com". (Note this is the base URL.)
+        param id_: ``str``, the external ticket ID, eg "18812".
+        returns: deferred that when fired returns a list of ``AttrDict``s
+                 representing these bugs.
+        """
+        payload = {
+            'include_fields': ['id', 'summary', 'status'],
+            'f1': 'external_bugzilla.url',
+            'o1': 'equals',
+            'v1': url,
+            'f2': 'ext_bz_bug_map.ext_bz_bug_id',
+            'o2': 'equals',
+            'v2': id_,
+        }
+        d = self.call('Bug.search', payload)
+        d.addCallback(self._parse_bugs_callback)
+        return d
+
     def _parse_bug_callback(self, value):
         """
         Fires when we get bug information back from the XML-RPC server.

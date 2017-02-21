@@ -147,6 +147,27 @@ This will definitely earn you friends.
         except BugzillaException as e:
             print(e)
 
+Example: Searching with an upstream bug
+---------------------------------------
+
+Quickly find out "What BZ matches this external tracker ticket?"
+
+.. code-block:: python
+
+    from txbugzilla import connect, BugzillaException
+    from twisted.internet import defer
+
+    def example():
+        bz = yield connect()
+        try:
+            result = yield bz.find_by_external_tracker(
+                'http://tracker.ceph.com', '16673')
+            for b in result:
+                print(b.weburl + ' ' + b.summary)
+        except BugzillaException as e:
+            print(e)
+
+
 Example: Raw XML-RPC calls
 --------------------------
 
