@@ -157,6 +157,7 @@ Quickly find out "What BZ matches this external tracker ticket?"
     from txbugzilla import connect, BugzillaException
     from twisted.internet import defer
 
+    @defer.inlineCallbacks
     def example():
         bz = yield connect()
         try:
