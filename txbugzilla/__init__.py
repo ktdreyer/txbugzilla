@@ -144,7 +144,7 @@ class Connection(object):
         payload = {
             'include_fields': ['id', 'summary', 'status'],
             'f1': 'external_bugzilla.url',
-            'o1': 'equals',
+            'o1': 'substring',
             'v1': url,
             'f2': 'ext_bz_bug_map.ext_bz_bug_id',
             'o2': 'equals',
