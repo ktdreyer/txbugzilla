@@ -117,7 +117,7 @@ setup(
     description='Twisted API for Bugzilla',
     packages=['txbugzilla'],
     author='Ken Dreyer',
-    author_email='ktdreyer [at] ktdreyer.com',
+    author_email='ktdreyer@ktdreyer.com',
     url='https://github.com/ktdreyer/txbugzilla',
     version=metadata['version'],
     license='MIT',
