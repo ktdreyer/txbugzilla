@@ -100,21 +100,22 @@ And then, to re-use this token later:
         yield bz.assign(1234, 'someone@redhat.com')
 
 
-Side note: ~/.bugzillatoken
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Side note: bugzillatoken
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you pass no parameters to ``connect()``, the resulting connection will be
-anonymous *unless* you have a special ``.bugzillatoken`` file in your home
-directory. This file should look something like this::
+anonymous *unless* you have a special ``.cache/python-bugzilla/bugzillatoken``
+file in your home directory. This file should look something like this::
 
-    $ cat ~/.bugzillatoken
+    $ cat ~/.cache/python-bugzilla/bugzillatoken
     [bugzilla.redhat.com]
     token = 123456-abcdef987
 
 txbugzilla will look for this file and attempt to use the token there if one
-exists.
+exists. (It will also fall back to checking the older ``~/.bugzillatoken``
+location, if the ``~/.cache`` one is unavailable.)
 
-To construct this ``.bugzillatoken`` file, you can use the `python-bugzilla
+To construct this ``bugzillatoken`` file, you can use the `python-bugzilla
 <https://pypi.python.org/pypi/python-bugzilla>`_ module, like so::
 
     $ pip install python-bugzilla

@@ -43,15 +43,19 @@ def login_callback(value, url, username):
 
 def token_from_file(url):
     """ Check ~/.bugzillatoken for a token for this Bugzilla URL. """
-    path = os.path.expanduser('~/.bugzillatoken')
-    cfg = SafeConfigParser()
-    cfg.read(path)
-    domain = urlparse(url)[1]
-    if domain not in cfg.sections():
-        return None
-    if not cfg.has_option(domain, 'token'):
-        return None
-    return cfg.get(domain, 'token')
+    locations = [
+        os.path.expanduser('~/.cache/python-bugzilla/bugzillatoken'),
+        os.path.expanduser('~/.bugzillatoken'),
+    ]
+    for path in locations:
+        cfg = SafeConfigParser()
+        cfg.read(path)
+        domain = urlparse(url)[1]
+        if domain not in cfg.sections():
+            continue
+        if not cfg.has_option(domain, 'token'):
+            continue
+        return cfg.get(domain, 'token')
 
 
 class Connection(object):

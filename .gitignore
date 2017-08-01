@@ -5,7 +5,7 @@
 .test
 .testrepository
 .tox
-.cache
+/.cache
 .coverage
 build/*
 dist/*
