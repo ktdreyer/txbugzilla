@@ -1,4 +1,5 @@
 import os
+import re
 from twisted.web.xmlrpc import Proxy
 from twisted.internet import defer
 from attrdict import AttrDict
@@ -232,11 +233,20 @@ class BugzillaException(Exception):
 
 
 class BugzillaNotFoundException(BugzillaException):
-    pass
+    @property
+    def id(self):
+        """ Bug ID number that caused this error """
+        m = re.match('Bug #(\d+) does not exist', self.message)
+        return m.group(1)
 
 
 class BugzillaNotAuthorizedException(BugzillaException):
-    pass
+    @property
+    def id(self):
+        """ Bug ID number that caused this error """
+        m = re.match('You are not authorized to access bug #(\d+)',
+                     self.message)
+        return m.group(1)
 
 
 class BugzillaTokenExpiredException(BugzillaException):
