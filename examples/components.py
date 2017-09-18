@@ -20,6 +20,7 @@ def example():
     except BugzillaException as e:
         print(e)
 
+
 if __name__ == '__main__':
     example().addCallback(lambda ign: reactor.stop())
     reactor.run()
