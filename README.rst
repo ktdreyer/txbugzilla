@@ -196,3 +196,7 @@ For example, to see a list of all the groups of which you are a member:
             pprint(result['users'][0]['groups'])
         except BugzillaException as e:
             print(e)
+
+License
+-------
+MIT (see ``LICENSE``)
