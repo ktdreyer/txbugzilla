@@ -200,3 +200,8 @@ For example, to see a list of all the groups of which you are a member:
 License
 -------
 MIT (see ``LICENSE``)
+
+Packages that use this package
+------------------------------
+
+* `helga-bugzilla <https://pypi.org/project/helga-bugzilla/>`_
