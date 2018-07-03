@@ -206,7 +206,11 @@ class Connection(object):
         """
         if isinstance(error.value, IOError):
             raise error.value
-        if isinstance(error.value, xmlrpc.Fault):
+        if hasattr(xmlrpc, 'Fault'):  # Python 2:
+            fault = xmlrpc.Fault
+        else:
+            fault = xmlrpc.client.Fault
+        if isinstance(error.value, fault):
             if error.value.faultCode == 101:
                 raise BugzillaNotFoundException(error.value.faultString)
             if error.value.faultCode == 102:
