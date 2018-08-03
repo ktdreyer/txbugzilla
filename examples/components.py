@@ -1,5 +1,6 @@
 from txbugzilla import connect, BugzillaException
-from twisted.internet import defer, reactor
+from twisted.internet import defer
+from twisted.internet.task import react
 from pprint import pprint
 
 # Print the raw component data for the Red Hat Ceph Storage product.
@@ -10,7 +11,7 @@ from pprint import pprint
 
 
 @defer.inlineCallbacks
-def example():
+def example(reactor):
     bz = yield connect()
 
     payload = {'names': ['Red Hat Ceph Storage']}
@@ -22,5 +23,4 @@ def example():
 
 
 if __name__ == '__main__':
-    example().addCallback(lambda ign: reactor.stop())
-    reactor.run()
+    react(example)

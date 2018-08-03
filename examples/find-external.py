@@ -2,7 +2,8 @@ from pprint import pprint
 import re
 from urlparse import urlparse
 from txbugzilla import connect, BugzillaException
-from twisted.internet import defer, reactor
+from twisted.internet import defer
+from twisted.internet.task import react
 
 
 EXTERNAL_TRACKER_ID_REGEX = re.compile('\d+$')
@@ -31,7 +32,7 @@ def find_tracker_id(ticket_url):
 
 
 @defer.inlineCallbacks
-def example():
+def example(reactor):
     bz = yield connect()
 
     upstream = 'http://tracker.ceph.com/issues/16673'
@@ -51,5 +52,4 @@ def example():
 
 
 if __name__ == '__main__':
-    example().addCallback(lambda ign: reactor.stop())
-    reactor.run()
+    react(example)

@@ -16,10 +16,11 @@ Simple Example: Fetching a bug
 .. code-block:: python
 
     from txbugzilla import connect, BugzillaException
-    from twisted.internet import defer, reactor
+    from twisted.internet import defer
+    from twisted.internet.task import react
 
     @defer.inlineCallbacks
-    def example():
+    def example(reactor):
         # connect() defaults to https://bugzilla.redhat.com/xmlrpc.cgi
         bz = yield connect()
 
@@ -31,8 +32,7 @@ Simple Example: Fetching a bug
             print(e)
 
     if __name__ == '__main__':
-        example().addCallback(lambda ign: reactor.stop())
-        reactor.run()
+        react(example)
 
 
 Example: Authentication
