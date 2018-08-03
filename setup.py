@@ -26,7 +26,7 @@ version = metadata['version']
 class BumpCommand(Command):
     """ Bump the __version__ number and commit all changes. """
 
-    user_options = []
+    user_options = [('version=', 'v', 'version number to use')]
 
     def initialize_options(self):
         new_version = metadata['version'].split('.')
