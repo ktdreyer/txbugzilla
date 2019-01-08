@@ -18,6 +18,7 @@ def read_module_contents():
     with open('txbugzilla/__init__.py') as txbugzilla_init:
         return txbugzilla_init.read()
 
+
 module_file = read_module_contents()
 metadata = dict(re.findall("__([a-z]+)__\s*=\s*'([^']+)'", module_file))
 version = metadata['version']
