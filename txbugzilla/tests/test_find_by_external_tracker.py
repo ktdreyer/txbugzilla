@@ -1,5 +1,5 @@
 import os
-import pytest
+import pytest_twisted
 from txbugzilla import connect
 from twisted.internet import defer
 
@@ -22,7 +22,7 @@ class _StubProxy(object):
 
 class TestFindByExternalTracker(object):
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_find_by_external_tracker(self, monkeypatch):
         monkeypatch.setenv('HOME', os.getcwd())
         monkeypatch.setattr('txbugzilla.Proxy', _StubProxy)
