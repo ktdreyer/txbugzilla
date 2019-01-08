@@ -240,7 +240,7 @@ class BugzillaNotFoundException(BugzillaException):
     @property
     def id(self):
         """ Bug ID number that caused this error """
-        m = re.match('Bug #(\d+) does not exist', self.message)
+        m = re.match(r'Bug #(\d+) does not exist', self.message)
         return m.group(1)
 
 
@@ -248,7 +248,7 @@ class BugzillaNotAuthorizedException(BugzillaException):
     @property
     def id(self):
         """ Bug ID number that caused this error """
-        m = re.match('You are not authorized to access bug #(\d+)',
+        m = re.match(r'You are not authorized to access bug #(\d+)',
                      self.message)
         return m.group(1)
 
