@@ -6,7 +6,7 @@ from twisted.internet import defer
 from twisted.internet.task import react
 
 
-EXTERNAL_TRACKER_ID_REGEX = re.compile('\d+$')
+EXTERNAL_TRACKER_ID_REGEX = re.compile(r'\d+$')
 
 
 def find_tracker_url(ticket_url):
