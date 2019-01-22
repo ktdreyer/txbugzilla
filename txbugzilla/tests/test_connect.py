@@ -1,19 +1,6 @@
 import os
-import pytest
 import pytest_twisted
 from txbugzilla import connect, Connection
-from twisted.internet import defer
-
-
-class _StubProxy(object):
-    def __init__(self, url):
-        pass
-
-    def callRemote(self, action, payload):
-        """ Return a deferred that always fires successfully """
-        assert action == 'User.login'
-        result = {'token': 'ABC-123'}
-        return defer.succeed(result)
 
 
 class TestConnect(object):
@@ -23,15 +10,11 @@ class TestConnect(object):
         monkeypatch.setenv('HOME', os.getcwd())
         bz = yield connect()
         assert isinstance(bz, Connection)
-
-    @pytest_twisted.inlineCallbacks
-    def test_wrong_args_connect(self):
-        with pytest.raises(ValueError) as e:
-            yield connect(username='nopassword@example.com')
-        assert 'specify a password' in str(e.value)
+        assert bz.api_key is None
 
     @pytest_twisted.inlineCallbacks
     def test_authentication_connect(self, monkeypatch):
-        monkeypatch.setattr('txbugzilla.Proxy', _StubProxy)
-        bz = yield connect(username='ktdreyer@example.com', password='foobar')
+        monkeypatch.setenv('HOME', os.getcwd())
+        bz = yield connect(api_key='123456abcdef')
         assert isinstance(bz, Connection)
+        assert bz.api_key == '123456abcdef'

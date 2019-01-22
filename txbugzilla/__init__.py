@@ -18,65 +18,42 @@ __version__ = '1.5.0'
 REDHAT = 'https://bugzilla.redhat.com/xmlrpc.cgi'
 
 
-def connect(url=REDHAT, username=None, password=None):
-    token = token_from_file(url)
-    if username is None and password is None and token is None:
-        # anonymous connection.
-        return defer.succeed(Connection(url))
-    if username is None and password is None and token is not None:
-        # use the token we got from the ~/.bugzillatoken file.
-        return defer.succeed(Connection(url, username, token))
-    if username is not None and password is None:
-        # Incorrect parameters
-        raise ValueError('specify a password for %s' % username)
-    # The caller provided a username and password string. Use these to obtain a
-    # new token.
-    proxy = Proxy(url.encode())
-    d = proxy.callRemote('User.login', {'login': username,
-                                        'password': password})
-    d.addCallback(login_callback, url, username)
-    return d
+def connect(url=REDHAT, api_key=None):
+    if not api_key:
+        api_key = api_key_from_file(url)
+    return defer.succeed(Connection(url, api_key))
 
 
-def login_callback(value, url, username):
-    return Connection(url, username, value['token'])
-
-
-def token_from_file(url):
-    """ Check ~/.bugzillatoken for a token for this Bugzilla URL. """
-    locations = [
-        os.path.expanduser('~/.cache/python-bugzilla/bugzillatoken'),
-        os.path.expanduser('~/.bugzillatoken'),
-    ]
-    for path in locations:
-        cfg = SafeConfigParser()
-        cfg.read(path)
-        domain = urlparse(url)[1]
-        if domain not in cfg.sections():
-            continue
-        if not cfg.has_option(domain, 'token'):
-            continue
-        return cfg.get(domain, 'token')
+def api_key_from_file(url):
+    """ Check bugzillarc for an API key for this Bugzilla URL. """
+    path = os.path.expanduser('~/.config/python-bugzilla/bugzillarc')
+    cfg = SafeConfigParser()
+    cfg.read(path)
+    domain = urlparse(url)[1]
+    if domain not in cfg.sections():
+        return None
+    if not cfg.has_option(domain, 'api_key'):
+        return None
+    return cfg.get(domain, 'api_key')
 
 
 class Connection(object):
 
-    def __init__(self, url=REDHAT, username=None, token=None):
+    def __init__(self, url=REDHAT, api_key=None):
         self.proxy = Proxy(url.encode())
         self.url = url
-        self.username = username
-        self.token = token
+        self.api_key = api_key
 
     def call(self, action, payload):
         """
         Make an XML-RPC call to the server. This method will automatically
-        authenticate the call with self.token, if that is set.
+        authenticate the call with self.api_key, if that is set.
 
         returns: deferred that when fired returns a dict with data from this
                  XML-RPC call.
         """
-        if self.token:
-            payload['Bugzilla_token'] = self.token
+        if self.api_key:
+            payload['Bugzilla_api_key'] = self.api_key
         d = self.proxy.callRemote(action, payload)
         d.addErrback(self._parse_errback)
         return d
