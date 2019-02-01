@@ -51,7 +51,7 @@ with an authenticated connection.
 
     @defer.inlineCallbacks
     def example():
-        # Authenticate via username and password
+        # Authenticate with an API key
         bz = yield connect(api_key='123456abcdef')
 
         # Do something as this logged-in user, for example:
@@ -105,7 +105,7 @@ This will definitely earn you friends.
 
     @defer.inlineCallbacks
     def example():
-        bz = yield connect(username='user@example.com', password='foo')
+        bz = yield connect(api_key='123456abcdef')
 
         try:
             result = yield bz.assign(1234, 'someone@redhat.com')
@@ -156,7 +156,7 @@ For example, to see a list of all the groups of which you are a member:
 
     @defer.inlineCallbacks
     def example():
-        bz = yield connect(username='user@example.com', password='foo')
+        bz = yield connect(api_key='123456abcdef')
 
         try:
             result = yield bz.call('User.get', {'names': [bz.username],
