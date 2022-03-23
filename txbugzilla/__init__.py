@@ -1,6 +1,6 @@
 import os
 import re
-from twisted.web.xmlrpc import Proxy
+from txbugzilla.proxy import BearerProxy
 from twisted.internet import defer
 from attrdict import AttrDict
 try:
@@ -40,19 +40,23 @@ def api_key_from_file(url):
 class Connection(object):
 
     def __init__(self, url=REDHAT, api_key=None):
-        self.proxy = Proxy(url.encode())
         self.url = url
         self.api_key = api_key
+        if 'redhat.com' in url:
+            self.proxy = BearerProxy(url.encode(), api_key=api_key)
+        else:
+            self.proxy = BearerProxy(url.encode())
 
     def call(self, action, payload):
         """
         Make an XML-RPC call to the server. This method will automatically
-        authenticate the call with self.api_key, if that is set.
+        authenticate the call with self.api_key if that is set and the
+        bugzilla instance is not at redhat.com.
 
         returns: deferred that when fired returns a dict with data from this
                  XML-RPC call.
         """
-        if self.api_key:
+        if self.api_key and 'redhat.com' not in self.url:
             payload['Bugzilla_api_key'] = self.api_key
         d = self.proxy.callRemote(action, payload)
         d.addErrback(self._parse_errback)

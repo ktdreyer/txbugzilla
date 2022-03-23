@@ -5,7 +5,7 @@ from twisted.internet import defer
 
 
 class _StubProxy(object):
-    def __init__(self, url):
+    def __init__(self, url, api_key):
         pass
 
     def callRemote(self, action, payload):
@@ -25,7 +25,7 @@ class TestFindByExternalTracker(object):
     @pytest_twisted.inlineCallbacks
     def test_find_by_external_tracker(self, monkeypatch):
         monkeypatch.setenv('HOME', os.getcwd())
-        monkeypatch.setattr('txbugzilla.Proxy', _StubProxy)
+        monkeypatch.setattr('txbugzilla.BearerProxy', _StubProxy)
 
         external_tracker_url = 'http://tracker.ceph.com'
         external_tracker_id = '16673'
