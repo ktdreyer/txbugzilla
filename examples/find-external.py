@@ -48,7 +48,7 @@ def example(reactor):
                                                    external_tracker_id)
         print('Result is:')
         for b in result:
-            pprint(dict(b))
+            pprint(b)
     except BugzillaException as e:
         print('BugzillaException:')
         print(e)

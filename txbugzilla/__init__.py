@@ -2,7 +2,6 @@ import os
 import re
 from txbugzilla.proxy import BearerProxy
 from twisted.internet import defer
-from attrdict import AttrDict
 try:
     from configparser import SafeConfigParser
     from urllib.parse import urlparse
@@ -67,7 +66,7 @@ class Connection(object):
         Get a single bug object. Similar to python-bugzilla's getbugsimple().
 
         param bugid: integer, a bug's number.
-        returns: deferred that when fired returns an AttrDict representing this
+        returns: deferred that when fired returns an dict representing this
                  bug.
         """
         payload = {'ids': bugid}
@@ -80,7 +79,7 @@ class Connection(object):
         Get multiple bug objects. Similar to python-bugzilla's getbugssimple().
 
         param bugids: ``list`` of ``int``, bug numbers.
-        returns: deferred that when fired returns a list of ``AttrDict``s
+        returns: deferred that when fired returns a list of ``dict``s
                  representing these bugs.
         """
         payload = {'ids': bugids}
@@ -93,7 +92,7 @@ class Connection(object):
         Get multiple bug objects' summaries only (faster).
 
         param bugids: ``list`` of ``int``, bug numbers.
-        returns: deferred that when fired returns a list of ``AttrDict``s
+        returns: deferred that when fired returns a list of ``dict``s
                  representing these bugs.
         """
         payload = {'ids': bugids, 'include_fields': ['id', 'summary']}
@@ -124,7 +123,7 @@ class Connection(object):
         param url: ``str``, the external ticket URL, eg
                    "http://tracker.ceph.com". (Note this is the base URL.)
         param id_: ``str``, the external ticket ID, eg "18812".
-        returns: deferred that when fired returns a list of ``AttrDict``s
+        returns: deferred that when fired returns a list of ``dict``s
                  representing these bugs.
         """
         payload = {
@@ -146,7 +145,7 @@ class Connection(object):
 
         param value: dict of data from XML-RPC server. The "bugs" dict element
                      contains a list of bugs.
-        returns: ``AttrDict``
+        returns: ``dict``
         """
         return self._parse_bug(value['bugs'][0])
 
@@ -156,7 +155,7 @@ class Connection(object):
 
         param value: dict of data from XML-RPC server. The "bugs" dict element
                      contains a list of bugs.
-        returns: ``list`` of ``AttrDict``
+        returns: ``list`` of ``dict``
         """
         return list(map(lambda x: self._parse_bug(x), value['bugs']))
 
@@ -205,12 +204,11 @@ class Connection(object):
     def _parse_bug(self, data):
         """
         param data: dict of data from XML-RPC server, representing a bug.
-        returns: AttrDict
+        returns: dict
         """
         if 'id' in data:
             data['weburl'] = self.url.replace('xmlrpc.cgi', str(data['id']))
-        bug = AttrDict(data)
-        return bug
+        return data
 
 
 class BugzillaException(Exception):
