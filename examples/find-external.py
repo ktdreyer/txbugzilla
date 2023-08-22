@@ -38,7 +38,7 @@ def find_tracker_id(ticket_url):
 def example(reactor):
     bz = yield connect()
 
-    upstream = 'http://tracker.ceph.com/issues/16673'
+    upstream = 'https://tracker.ceph.com/issues/58710'
     external_tracker_url = find_tracker_url(upstream)
     external_tracker_id = find_tracker_id(upstream)
     print(external_tracker_url)
