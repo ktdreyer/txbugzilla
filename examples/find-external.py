@@ -1,6 +1,9 @@
 from pprint import pprint
 import re
-from urlparse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 from txbugzilla import connect, BugzillaException
 from twisted.internet import defer
 from twisted.internet.task import react
